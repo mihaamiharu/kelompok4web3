@@ -42,3 +42,50 @@ module.exports.deleteBuku = (req,res) => {
         throw error;
     })
 }
+
+
+module.exports.cariJudul = (req, res) => {
+    Buku.findAll({
+        where:{
+            judul:req.params.judul
+        }
+    }).then((buku)=>{
+        res.json(buku);
+    }).catch((error)=>{
+        throw error;
+    });
+}
+module.exports.cariPenerbit = (req, res) => {
+    Buku.findAll({
+        where:{
+            penerbit:req.params.penerbit
+        }
+    }).then((buku)=>{
+        res.json(buku);
+    }).catch((error)=>{
+        throw error;
+    });
+}
+
+module.exports.cariTahun = (req, res) => {
+    Buku.findAll({
+        where:{
+            tahun_terbit:req.params.tahun_terbit
+        }
+    }).then((buku)=>{
+        res.json(buku);
+    }).catch((error)=>{
+        throw error;
+    });
+}
+module.exports.cariPenulis = (req, res) => {
+    Buku.findAll({
+        where:{
+            penulis:req.params.penulis
+        }
+    }).then((buku)=>{
+        res.json(buku);
+    }).catch((error)=>{
+        throw error;
+    });
+}
