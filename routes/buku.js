@@ -10,4 +10,16 @@ router.put('/:id', bukuController.putBuku);
 
 router.delete('/:id', bukuController.deleteBuku);
 
+//Ekki 19/07/19 Menambah routes mencari judul 
+router.get('/:judul', bukuController.cariJudul);
+//Ekki 19/07/19 Menambah routes mencari penulis
+router.get('/:penulis', bukuController.cariPenulis);
+
+//Fabian 19/07/19 Menambah routes mencari penerbit
+router.get('/:penerbit', bukuController.cariPenerbit);
+
+//Reza19/07/19 Menambah routes mencari tahun buku
+router.get('/:tahun_terbit', bukuController.cariTahun);
+
+
 module.exports = router;
