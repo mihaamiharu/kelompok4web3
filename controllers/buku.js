@@ -29,3 +29,16 @@ module.exports.putBuku = (req, res) => {
         throw error;
     })
 }
+
+module.exports.deleteBuku = (req,res) => {
+    Product.destroy({
+    
+    where: {
+        id: req.params.id
+    }
+    }).then((product) => {
+        res.json(buku);
+    }).catch((error) => {
+        throw error;
+    })
+}

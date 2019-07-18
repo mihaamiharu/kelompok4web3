@@ -7,3 +7,7 @@ const bukuController = require('../controllers/buku');
 router.post('/', bukuController.postBuku);
 
 router.put('/:id', bukuController.putBuku);
+
+router.delete('/:id', bukuController.deleteBuku);
+
+module.exports = router;
