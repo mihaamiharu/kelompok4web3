@@ -1,15 +1,46 @@
 const Buku = require('../models/buku');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
+dotenv.config();
+
+module.exports.getIndexBuku = (req, res) => {
+    jwt.verify(req.token, process.env.SECRETKEY, (error, authData)=>{
+        if(error){
+            res.sendStatus(403);
+        }else{
+            res.json({
+                message:'OK',
+                authData: authData
+            })
+        }
+    })
+}
+
+//Update Autentikasi
 module.exports.postBuku = (req, res) => {
-    Buku.create({
+    jwt.verify(req.token, procces.env.SECRETKEY, (error,authData)=>{
+        if(error){
+            res.sendStatus(403);
+        }else{
+            if(authData['roles']=="admin"){
+           
+    let bukus ={
         judul: req.body.judul,
         penulis: req.body.penulis,
         penerbit: req.body.penerbit,
         tahun_terbit: req.body.tahun_terbit
-    }).then((buku)=>{
+    }
+    Buku
+    .create(bukus)
+    .then((buku)=>{
         res.json(buku);
-    }).catch((error)=>{
-        throw error;
+    })
+    .catch((error)=>{
+        console.log("error");
+                  })
+            }
+             }
     })
 }
 
@@ -43,6 +74,17 @@ module.exports.deleteBuku = (req,res) => {
     })
 }
 
+module.exports.cariSemua = (req, res) => {
+    Buku
+    .findAll({
+    })
+    .then((buku) =>{
+        res.json(buku);
+    })
+    .catch((error) => {
+        throw error;
+    })
+}
 
 module.exports.cariJudul = (req, res) => {
     Buku.findAll({
