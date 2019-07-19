@@ -1,89 +1,144 @@
-const Buku = require('../models/buku');
+const Buku = require('../models/Buku');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+// const Sequelize = require('sequelize');
+
 
 dotenv.config();
 
+
+
+  
 module.exports.getIndexBuku = (req, res) => {
-    jwt.verify(req.token, process.env.SECRETKEY, (error, authData)=>{
-        if(error){
-            res.sendStatus(403);
-        }else{
-            res.json({
-                message:'OK',
-                authData: authData
+	jwt.verify(req.token, process.env.SECRETKEY, (error, authData) => {
+		if(error){
+			res.sendStatus(403);
+		}else{
+			res.json({
+				message: 'OK',
+				authData: authData
+})
+		}
+	})
+}
+
+
+//Update Autentikasi
+module.exports.postBuku = (req, res) => {
+	jwt.verify(req.token, process.env.SECRETKEY, (error,authData)=>{
+        if (error){
+          res.sendStatus(403);
+        } else {
+          if(authData['roles'] == "admin"){
+          
+            let bukus ={
+                judul: req.body.judul,
+				penulis: req.body.penulis,
+				penerbit: req.body.penerbit,
+				tahun_terbit: req.body.tahun_terbit,
+				stock : req.body.stock,
+				harga : req.body.harga
+            }
+            Buku
+            .create(bukus)
+            .then((buku) => {
+				
+                res.json(buku);
+				
             })
+            .catch((error) => {
+                console.log("error");
+            })  
+        }
         }
     })
 }
 
 //Update Autentikasi
-module.exports.postBuku = (req, res) => {
-    jwt.verify(req.token, procces.env.SECRETKEY, (error,authData)=>{
-        if(error){
-            res.sendStatus(403);
-        }else{
-            if(authData['roles']=="admin"){
-           
-    let bukus ={
-        judul: req.body.judul,
-        penulis: req.body.penulis,
-        penerbit: req.body.penerbit,
-        tahun_terbit: req.body.tahun_terbit
-    }
-    Buku
-    .create(bukus)
-    .then((buku)=>{
-        res.json(buku);
-    })
-    .catch((error)=>{
-        console.log("error");
-                  })
-            }
-             }
-    })
-}
-
 module.exports.putBuku = (req, res) => {
-    Buku.update({
-        judul: req.body.judul,
-        penulis: req.body.penulis,
-        penerbit: req.body.penerbit,
-        tahun_terbit: req.body.tahun_terbit
-    },
-    {where:{
-        id: req.params.id
+	jwt.verify(req.token, process.env.SECRETKEY, (error,authData)=>{
+        if (error){
+          res.sendStatus(403);
+        } else {
+          if(authData['roles'] == "admin"){
+            let bukus ={
+                judul: req.body.judul,
+				penulis: req.body.penulis,
+				penerbit: req.body.penerbit,
+				tahun_terbit: req.body.tahun_terbit,
+				stock : req.body.stock,
+				harga : req.body.harga
+            }
+			let condition = {where:{
+				id: req.params.id
+				}
+			}
+            Buku
+            .update(bukus,condition)
+            .then((buku) => {
+				
+                res.json(buku);
+				
+            })
+            .catch((error) => {
+                console.log("error");
+            })  
+        }
+        }
+    })
     }
-    }).then((buku) =>{
+
+	
+	//Update Autentikasi
+module.exports.deleteBuku = (req, res) => {
+   jwt.verify(req.token, process.env.SECRETKEY, (error,authData)=>{
+        if (error){
+          res.sendStatus(403);
+        } else {
+          if(authData['roles'] == "admin"){
+            Buku
+            .destroy({ where : { 
+			id: req.params.id }
+			
+			
+			})
+            .then((buku) => {
+				
+                res.json(buku);
+				
+            })
+            .catch((error) => {
+                console.log("error");
+            })  
+        }
+        }
+    })
+    }
+
+	
+	//Search by ID 
+module.exports.cariBuku = (req, res) => {
+    Buku.findByPk(
+			req.params.id
+    ).then((buku)=>{
         res.json(buku);
     }).catch((error)=>{
         throw error;
-    })
+    });
 }
 
-module.exports.deleteBuku = (req,res) => {
-    Product.destroy({
-    
-    where: {
-        id: req.params.id
-    }
-    }).then((product) => {
-        res.json(buku);
-    }).catch((error) => {
-        throw error;
-    })
-}
 
+	//Search All Books 
 module.exports.cariSemua = (req, res) => {
-    Buku
-    .findAll({
-    })
-    .then((buku) =>{
-        res.json(buku);
-    })
-    .catch((error) => {
-        throw error;
-    })
+	Buku
+		.findAll({
+		})
+		.then((buku) => {
+			res.json(buku);
+		})
+		.catch((error) => {
+			throw error;
+		})
 }
 
 module.exports.cariJudul = (req, res) => {
@@ -97,6 +152,7 @@ module.exports.cariJudul = (req, res) => {
         throw error;
     });
 }
+
 module.exports.cariPenerbit = (req, res) => {
     Buku.findAll({
         where:{
@@ -112,7 +168,7 @@ module.exports.cariPenerbit = (req, res) => {
 module.exports.cariTahun = (req, res) => {
     Buku.findAll({
         where:{
-            tahun_terbit:req.params.tahun_terbit
+            tahun_terbit : req.params.tahun_terbit
         }
     }).then((buku)=>{
         res.json(buku);
@@ -120,6 +176,7 @@ module.exports.cariTahun = (req, res) => {
         throw error;
     });
 }
+
 module.exports.cariPenulis = (req, res) => {
     Buku.findAll({
         where:{
@@ -131,3 +188,17 @@ module.exports.cariPenulis = (req, res) => {
         throw error;
     });
 }
+
+// module.exports.orderByHarga = (req,res) => {
+	// Buku.findAll({
+        // order: [
+		// include: [{model: Buku}],
+			// ['harga'],
+              // sequelize.fn('max', sequelize.col('harga'))
+        // ]
+    // }).then((buku)=>{
+        // res.json(buku);
+    // }).catch((error)=>{
+        // throw error;
+    // });
+  // }

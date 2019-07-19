@@ -2,27 +2,28 @@ const express = require('express');
 
 const router = express.Router();
 
-const auth = require('../configs/auth');
-
 const bukuController = require('../controllers/buku');
 
-router.post('/', bukuController.postBuku);
+const auth = require('../configs/auth');
 
-router.put('/:id', bukuController.putBuku);
+router.get('/', auth.verifyToken, bukuController.getIndexBuku);
 
-router.delete('/:id', bukuController.deleteBuku);
+router.post('/add/', auth.verifyToken,bukuController.postBuku);
 
-//Ekki 19/07/19 Menambah routes mencari judul 
+router.put('/edit/:id', auth.verifyToken,bukuController.putBuku);
+
+router.delete('/drop/:id',auth.verifyToken,bukuController.deleteBuku);
+
+
+
+router.get('/all', bukuController.cariSemua);
 router.get('/:judul', bukuController.cariJudul);
-//Ekki 19/07/19 Menambah routes mencari penulis
+// router.get('/find/termahal', bukuController.orderByHarga);
+
+
 router.get('/writer/:penulis', bukuController.cariPenulis);
-
-//Fabian 19/07/19 Menambah routes mencari penerbit
 router.get('/author/:penerbit', bukuController.cariPenerbit);
-
-//Reza19/07/19 Menambah routes mencari tahun buku
-router.get('/:tahun_terbit', bukuController.cariTahun);
-
+router.get('/published/:tahun_terbit', bukuController.cariTahun);
 
 
 module.exports = router;
