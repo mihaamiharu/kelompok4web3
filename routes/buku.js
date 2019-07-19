@@ -8,7 +8,7 @@ const auth = require('../configs/auth');
 
 router.get('/', auth.verifyToken, bukuController.getIndexBuku);
 
-router.post('/add/', auth.verifyToken,bukuController.postBuku);
+router.post('/add', auth.verifyToken,bukuController.postBuku);
 
 router.put('/edit/:id', auth.verifyToken,bukuController.putBuku);
 
@@ -17,6 +17,8 @@ router.delete('/drop/:id',auth.verifyToken,bukuController.deleteBuku);
 
 
 router.get('/all', bukuController.cariSemua);
+router.get('/caribuku/:id', bukuController.cariBuku);
+
 router.get('/:judul', bukuController.cariJudul);
 // router.get('/find/termahal', bukuController.orderByHarga);
 

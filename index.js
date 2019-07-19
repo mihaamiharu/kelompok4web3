@@ -35,7 +35,7 @@ app.use('/user', userRouter);
 
 
 
-app.listen(3000, () => {
+app.listen(3204, () => {
     console.log('server started');
     sequelize.sync();
 })

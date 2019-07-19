@@ -1,16 +1,9 @@
 const Order = require('../models/Order');
 const Session = require('../models/Session');
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-dotenv.config();
 
 
 module.exports.postOrder = (req, res) => {
-	jwt.verify(req.token, process.env.SECRETKEY, (error,authData)=>{
-        if (error){
-          res.sendStatus(403);
-        } else {
-		if(authData['roles'] == "user"){
+	
 		var session = {
 			userId: 2
 		};
@@ -44,13 +37,11 @@ module.exports.postOrder = (req, res) => {
 				})
 				.catch((error) => {
 					console.log(error)
-				})
+				})	
 		})
 		.catch((error) => {
 			console.log(error)
-		})
-		}
-		}
+		})				
 }
 
 module.exports.getDetail = (req, res) => {
